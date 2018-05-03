@@ -10,13 +10,14 @@ chardet==3.0.4
 click==6.7
 colorama==0.3.7
 cryptography==2.2.2
--e git+https://github.com/mara/data-integration.git@867315c33de1312100075e88f942d20080818f08#egg=data_integration
+-e git+https://github.com/mara/data-integration.git@1c0d26e447a662b8529fe8ae70d4824734c7ee2a#egg=data_integration
+-e git+git@codebasehq.com:project-a/mara/data-sets.git@065fa11f42bdef3609104575fd8c2d61a0d731fa#egg=data_sets
 docutils==0.14
 -e git+https://github.com/mara/etl-tools.git@1497edaf865550389d2df44bf488c4348896c6d8#egg=etl_tools
-Flask==0.12.2
-google-api-python-client==1.6.6
-graphviz==0.8.2
-gunicorn==19.7.1
+Flask==1.0.2
+google-api-python-client==1.6.7
+graphviz==0.8.3
+gunicorn==19.8.1
 httplib2==0.11.3
 idna==2.6
 itsdangerous==0.24
@@ -25,7 +26,7 @@ jmespath==0.9.3
 Mako==1.0.7
 -e git+https://github.com/mara/mara-acl.git@9d0ef617e6c3baa2df2824935e63921fdbddfc60#egg=mara_acl
 -e git+https://github.com/mara/mara-app.git@66ba874d50fd30910ecf38f8c313c3a9f7e6624a#egg=mara_app
--e git+https://github.com/mara/mara-db.git@4b496a8f82b780753c698cee70fe5619779d3906#egg=mara_db
+-e git+https://github.com/mara/mara-db.git@9a17424c41236945fe40ee3e81e7229d12551b2f#egg=mara_db
 -e git+https://github.com/mara/mara-page.git@b1c32141080a322c9d8a7613ae1dc070479f762d#egg=mara_page
 MarkupSafe==1.0
 more-itertools==4.1.0
@@ -47,8 +48,8 @@ requests==2.18.4
 rsa==3.4.2
 s3transfer==0.1.13
 six==1.11.0
-SQLAlchemy==1.2.6
-SQLAlchemy-Utils==0.33.2
+SQLAlchemy==1.2.7
+SQLAlchemy-Utils==0.33.3
 uritemplate==3.0.0
 urllib3==1.22
 Werkzeug==0.14.1

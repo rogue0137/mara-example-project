@@ -2,6 +2,7 @@ CREATE TABLE pypi_dim_next.download (
   day_fk              INTEGER  NOT NULL,
   project_version_fk  INTEGER  NOT NULL,
   installer_fk        SMALLINT NOT NULL,
+  python_version_fk   SMALLINT NOT NULL,
   number_of_downloads INTEGER  NOT NULL,
   _day_chunk          SMALLINT NOT NULL
 )
@@ -16,9 +17,10 @@ CREATE OR REPLACE FUNCTION pypi_tmp.transform_download(param_day_chunk SMALLINT)
 BEGIN
   RETURN QUERY
   SELECT
-    day_id                                 AS day_fk,
-    project_version_id                     AS project_version_fk,
-    coalesce(installer_id, -1) :: SMALLINT AS installer_fk,
+    day_id                                      AS day_fk,
+    project_version_id                          AS project_version_fk,
+    coalesce(installer_id, -1) :: SMALLINT      AS installer_fk,
+    coalesce(python_version_id, -1) :: SMALLINT AS python_version_fk,
     number_of_downloads,
     param_day_chunk
   FROM pypi_data.download
@@ -28,6 +30,9 @@ BEGIN
 
     LEFT JOIN pypi_dim_next.installer
       ON download.installer = installer.installer_name
+
+    LEFT JOIN pypi_dim_next.python_version
+      ON download.python_version = python_version.python_version_name
   WHERE
     -- this will return in a few milliseconds for partitions with days in different chunks
     pypi_tmp.compute_chunk(download.day_id) = param_day_chunk;
@@ -53,6 +58,7 @@ CREATE OR REPLACE FUNCTION pypi_tmp.constrain_download()
 SELECT util.add_fk('pypi_dim_next', 'download', 'time', 'day');
 SELECT util.add_fk('pypi_dim_next', 'download', 'pypi_dim_next', 'project_version');
 SELECT util.add_fk('pypi_dim_next', 'download', 'pypi_dim_next', 'installer');
+SELECT util.add_fk('pypi_dim_next', 'download', 'pypi_dim_next', 'python_version');
 $$
 LANGUAGE SQL;
 

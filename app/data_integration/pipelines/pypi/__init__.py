@@ -75,6 +75,14 @@ pipeline.add(
     upstreams=['read_download'])
 
 pipeline.add(
+    Task(id="transform_python_version",
+         description='Creates the "python_version" dimension',
+         commands=[
+             ExecuteSQL(sql_file_name="transform_python_version.sql")
+         ]),
+    upstreams=['read_download'])
+
+pipeline.add(
     ParallelExecuteSQL(
         id="transform_download",
         description="Maps downloads to their dimensions",
@@ -84,7 +92,23 @@ pipeline.add(
         commands_before=[
             ExecuteSQL(sql_file_name="transform_download.sql")
         ]),
-    upstreams=["preprocess_project_version", "transform_installer"])
+    upstreams=["preprocess_project_version", "transform_installer", "transform_python_version"])
+
+pipeline.add(
+    ParallelExecuteSQL(
+        id="create_downloads_data_set",
+        description="Creates a flat data set for PyPi downloads",
+        sql_statement="SELECT pypi_tmp.insert_downloads_data_set(@chunk@::SMALLINT);",
+        parameter_function=etl_tools.utils.chunk_parameter_function,
+        parameter_placeholders=["@chunk@"],
+        commands_before=[
+            ExecuteSQL(sql_file_name="create_downloads_data_set.sql")
+        ],
+        commands_after=[
+            ExecuteSQL(
+                sql_statement="SELECT util.create_data_set_attributes_table('pypi_dim_next', 'downloads_data_set');")
+        ]),
+    upstreams=["transform_project", "transform_project_version", "transform_download"])
 
 pipeline.add(
     Task(id="constrain_tables",
