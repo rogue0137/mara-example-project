@@ -1,7 +1,8 @@
 alembic==0.9.9
 asn1crypto==0.24.0
+attrs==18.1.0
 awscli==1.13.0
--e git+https://github.com/mara/bigquery-downloader.git@9385355eec61485eebb89992cab88877d5b9ec37#egg=bigquery_downloader
+-e git+https://github.com/mara/bigquery-downloader.git@18d8000f5de23cdf1971e05eeb2f0c69f1a9831d#egg=bigquery_downloader
 BigQuery-Python==1.14.0
 botocore==1.8.3
 certifi==2018.4.16
@@ -10,35 +11,40 @@ chardet==3.0.4
 click==6.7
 colorama==0.3.7
 cryptography==2.2.2
--e git+https://github.com/mara/data-integration.git@867315c33de1312100075e88f942d20080818f08#egg=data_integration
+-e git+https://github.com/mara/data-integration.git@172db0ead9dd583fa71f23e6a7720f0992fb326e#egg=data_integration
 docutils==0.14
--e git+https://github.com/mara/etl-tools.git@1497edaf865550389d2df44bf488c4348896c6d8#egg=etl_tools
-Flask==0.12.2
+-e git+https://github.com/mara/etl-tools.git@a13590d19dbb7db249df3d26499145bdbfe1aeeb#egg=etl_tools
+Flask==1.0.2
 google-api-python-client==1.6.6
 graphviz==0.8.2
-gunicorn==19.7.1
+gunicorn==19.8.1
 httplib2==0.11.3
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
 jmespath==0.9.3
 Mako==1.0.7
--e git+https://github.com/mara/mara-acl.git@9d0ef617e6c3baa2df2824935e63921fdbddfc60#egg=mara_acl
--e git+https://github.com/mara/mara-app.git@66ba874d50fd30910ecf38f8c313c3a9f7e6624a#egg=mara_app
--e git+https://github.com/mara/mara-db.git@4b496a8f82b780753c698cee70fe5619779d3906#egg=mara_db
--e git+https://github.com/mara/mara-page.git@b1c32141080a322c9d8a7613ae1dc070479f762d#egg=mara_page
+-e git+https://github.com/mara/mara-acl.git@bcb28b232c5ba2f68320f6e5ddea7336e0af9e3d#egg=mara_acl
+-e git+https://github.com/mara/mara-app.git@9eb7035a6d3eb5f65b21a525d3b04bf9f5a5c2aa#egg=mara_app
+-e git+https://github.com/mara/mara-cli.git@90c323a737195845ddff046444c05c30b81da5e4#egg=mara_cli
+-e git+https://github.com/mara/mara-config.git@5429883efeeb1962ab47c7f61746bb4e8b6b451e#egg=mara_config
+-e git+https://github.com/mara/mara-db.git@7567a063c32efe155d99e7c35f97fcc5a9e1ea73#egg=mara_db
+-e git+https://github.com/mara/mara-page.git@9fe11339a5b65cde82cbead508038ac3bff9b8f3#egg=mara_page
 MarkupSafe==1.0
 more-itertools==4.1.0
 multimethod==0.7.1
 oauth2client==4.1.2
 pipdeptree==0.12.1
+pluggy==0.6.0
 psutil==5.4.5
 psycopg2-binary==2.7.4
+py==1.5.3
 pyasn1==0.4.2
 pyasn1-modules==0.2.1
 pycparser==2.18
 Pygments==2.2.0
 pyOpenSSL==17.5.0
+pytest==3.5.1
 python-dateutil==2.7.2
 python-editor==1.0.3
 pythondialog==3.4.0
