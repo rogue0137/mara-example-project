@@ -9,7 +9,7 @@ import mara_app
 import mara_app.layout
 import mara_db
 import mara_page.acl
-from mara_app import monkey_patch
+from mara_config.config_system import wrap, patch
 from mara_page import acl
 from mara_page import navigation
 
@@ -20,12 +20,12 @@ blueprint = flask.Blueprint('ui', __name__, url_prefix='/ui', static_folder='sta
 MARA_FLASK_BLUEPRINTS = [start_page.blueprint, blueprint]
 
 # replace logo and favicon
-monkey_patch.patch(mara_app.config.favicon_url)(lambda: flask.url_for('ui.static', filename='favicon.ico'))
-monkey_patch.patch(mara_app.config.logo_url)(lambda: flask.url_for('ui.static', filename='logo.png'))
+patch(mara_app.config.favicon_url)(lambda: flask.url_for('ui.static', filename='favicon.ico'))
+patch(mara_app.config.logo_url)(lambda: flask.url_for('ui.static', filename='logo.png'))
 
 
 # add custom css
-@monkey_patch.wrap(mara_app.layout.css_files)
+@wrap(mara_app.layout.css_files)
 def css_files(original_function, response):
     files = original_function(response)
     files.append(flask.url_for('ui.static', filename='styles.css'))
@@ -33,28 +33,36 @@ def css_files(original_function, response):
 
 
 # define protected ACL resources
-@monkey_patch.patch(mara_acl.config.resources)
+@patch(mara_acl.config.resources)
 def acl_resources():
+    def iter(iterator_or_callable):
+        if callable(iterator_or_callable):
+            iterator_or_callable = iterator_or_callable()
+        return iterator_or_callable
     return [acl.AclResource(name='Documentation',
-                            children=data_integration.MARA_ACL_RESOURCES
-                                     + mara_db.MARA_ACL_RESOURCES),
+                            children=iter(data_integration.MARA_ACL_RESOURCES)
+                                     + iter(mara_db.MARA_ACL_RESOURCES)),
             acl.AclResource(name='Admin',
-                            children=mara_app.MARA_ACL_RESOURCES + mara_acl.MARA_ACL_RESOURCES)]
+                            children=iter(mara_app.MARA_ACL_RESOURCES) + iter(mara_acl.MARA_ACL_RESOURCES))]
 
 
 # activate ACL
-monkey_patch.patch(mara_page.acl.current_user_email)(mara_acl.users.current_user_email)
-monkey_patch.patch(mara_page.acl.current_user_has_permission)(mara_acl.permissions.current_user_has_permission)
-monkey_patch.patch(mara_page.acl.current_user_has_permissions)(mara_acl.permissions.current_user_has_permissions)
+patch(mara_page.acl.current_user_email)(mara_acl.users.current_user_email)
+patch(mara_page.acl.current_user_has_permission)(mara_acl.permissions.current_user_has_permission)
+patch(mara_page.acl.current_user_has_permissions)(mara_acl.permissions.current_user_has_permissions)
 
-monkey_patch.patch(mara_acl.config.whitelisted_uris)(lambda: ['/mara-app/navigation-bar'])
+patch(mara_acl.config.whitelisted_uris)(lambda: ['/mara-app/navigation-bar'])
 
 
 # navigation bar (other navigation entries will be automatically added)
-@monkey_patch.patch(mara_app.config.navigation_root)
+@patch(mara_app.config.navigation_root)
 def navigation_root() -> navigation.NavigationEntry:
     def navigation_entries(module):
-        return [fn() for fn in module.MARA_NAVIGATION_ENTRY_FNS]
+        navigation_entries = module.MARA_NAVIGATION_ENTRY_FNS
+        if callable(navigation_entries):
+            navigation_entries = navigation_entries()
+
+        return [fn() for fn in navigation_entries]
 
     return navigation.NavigationEntry(label='Root', children=(
             navigation_entries(data_integration)

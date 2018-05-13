@@ -6,7 +6,7 @@ import functools
 import data_integration.config
 import etl_tools.config
 from data_integration.pipelines import Pipeline
-from mara_app.monkey_patch import patch
+from mara_config.config_system import patch
 
 import app.config
 

@@ -3,7 +3,7 @@
 import pathlib
 
 import bigquery_downloader.config
-from mara_app.monkey_patch import patch
+from mara_config.config_system import patch
 
 import app.config
 
